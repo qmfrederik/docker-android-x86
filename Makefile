@@ -15,7 +15,7 @@ system.tar:
 	cp iso/system.sfs system.sfs
 	sudo umount iso
 
-	7z e -y system.sfs system.img
+	unsquashfs -f -d . system.sfs system.img
 
 	[ -d system ] || mkdir system
 	sudo mount -o ro system.img system
