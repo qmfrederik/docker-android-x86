@@ -1,6 +1,7 @@
 pool:
   vmImage: 'Ubuntu 16.04'
- steps:
+
+steps:
 - script: |
     make
   displayName: 'Build Docker image'
