@@ -1,0 +1,6 @@
+*.iso
+*.tar
+*.img
+*.sfs
+initrd/
+ramdisk/
