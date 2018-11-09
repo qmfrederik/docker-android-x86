@@ -1,7 +1,34 @@
-pool:
-  vmImage: 'Ubuntu 16.04'
 
-steps:
-- script: |
-    make
-  displayName: 'Build Docker image'
+jobs:
+- job: windows_build
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      sudo apt-get install -y repo bc openjdk-8-jdk
+
+      javac -version
+      java -version
+    displayName: Install dependencies
+
+  - script: |
+      git config --global user.email "Azure Pipelines"
+      git config --global user.name "docker-android-x86@github.com"
+
+      mkdir android-x86
+      cd android-x86
+     
+      repo init -q -u git://git.osdn.net/gitroot/android-x86/manifest -b nougat-x86 --depth=1 
+      repo sync --no-tags --no-clone-bundle kernel
+      repo sync --no-tags --no-clone-bundle device/generic/common device/generic/firmware device/generic/x86 device/generic/x86_64
+      repo sync --no-tags --no-clone-bundle frameworks/native
+      repo sync --no-tags --no-clone-bundle build build/kati
+      repo sync --no-tags --no-clone-bundle prebuilts/clang/host/linux-x86 prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8 prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.11-4.6 prebuilts/sdk prebuilts/ninja/linux-x86 prebuilts/gcc/linux-x86/x86/x86_64-linux-android-4.9
+      repo sync --no-tags --no-clone-bundle external/bison external/libcxx external/compiler-rt external/libcxxabi
+    displayName: Clone the Android repo
+
+  - script: |
+      cd android-x86
+      ls -l .
+      make kernel TARGET_PRODUCT=android_x86_64
+    displayName: Build the Android kernel
