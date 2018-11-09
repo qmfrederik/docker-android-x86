@@ -5,12 +5,16 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - script: |
+      sudo apt-get remove -y zulu-11-azure-jdk zulu-8-azure-jdk zulu-7-azure-jdk
       sudo apt-get install -y repo bc openjdk-8-jdk
 
       update-java-alternatives --list
       sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
 
+      which javac
       javac -version
+
+      which java
       java -version
     displayName: Install dependencies
 
