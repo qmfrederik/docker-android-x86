@@ -5,7 +5,7 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - script: |
-      sudo apt-get remove -y zulu-11-azure-jdk zulu-8-azure-jdk zulu-7-azure-jdk
+      sudo apt-get remove -y zulu-11-azure-jdk zulu-8-azure-jdk zulu-7-azure-jdk openjdk-11-jdk openjdk-10-jdk
       sudo apt-get install -y repo bc openjdk-8-jdk
 
       update-java-alternatives --list
