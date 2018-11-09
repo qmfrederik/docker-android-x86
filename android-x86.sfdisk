@@ -1,0 +1,6 @@
+label: dos
+label-id: 0x4d23e1e7
+device: android-x86.img
+unit: sectors
+
+android-x86.img1 : start=        2048, size=     8386560, type=83, bootable

@@ -1,12 +1,46 @@
 
 jobs:
-- job: windows_build
+- job: extract_iso
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
   - script: |
-      sudo apt-get remove -y zulu-11-azure-jdk zulu-8-azure-jdk zulu-7-azure-jdk openjdk-11-jdk openjdk-10-jdk
+      make
+      mkdir $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+
+      # For VHDs
+      cp system.sfs $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+      cp initrd.img $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+      cp ramdisk.img $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+
+      # For Docker
+      cp system.tar $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+      cp initrd.tar $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+      cp ramdisk.tar $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/android-x86'
+      artifactName: android-x86
+    displayName: Publish android-x86
+
+- job: kernel
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      apt list --installed | grep java
+      apt list --installed | grep jdk
+
+      sudo apt-get remove -y openjdk-11-jre openjdk-11-jdk openjdk-11-jdk-headless
+      sudo apt-get remove -y openjdk-10-jre openjdk-10-jdk openjdk-10-jdk-headless
+      sudo apt-get remove -y openjdk-9-jre openjdk-9-jdk openjdk-9-jdk-headless
+      sudo apt-get remove -y openjdk-7-jre openjdk-7-jdk openjdk-7-jdk-headless
       sudo apt-get install -y repo bc openjdk-8-jdk
+
+      apt list --installed | grep java
+      apt list --installed | grep jdk
+      apt list --installed | grep jre
 
       update-java-alternatives --list
       sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
@@ -37,5 +71,51 @@ jobs:
   - script: |
       cd android-x86
       ls -l .
+
+      cd kernel
+      git apply ../../patches/kernel.patch
+      cat arch/x86/configs/android-x86_64_defconfig
+      cd ..
+
       make kernel TARGET_PRODUCT=android_x86_64
     displayName: Build the Android kernel
+
+- job: build_vhd
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      sudo apt-get install -y qemu-utils
+
+      dd if=/dev/zero of=android-x86.img bs=1M count=$((1024*4))
+      sfdisk android-x86.img < android-x86.sfdisk
+
+      sudo losetup -fP android-x86.img
+
+      sudo mkfs -t ext3 /dev/loop0p1
+      sudo mkdir /mnt/android-x86
+      sudo mount /dev/loop0p1 /mnt/android-x86
+
+      sudo mkdir -p /mnt/android-x86/boot/grub
+      sudo cp device.map /mnt/android-x86/boot/grub/device.map
+
+      sudo grub-install --no-floppy --grub-mkdevicemap=device.map --modules="part_msdos" --boot-directory=/mnt/android-x86 /dev/loop0 -v
+
+      sudo cp kernel /mnt/android-x86/boot/
+      sudo cp initrd.img /mnt/android-x86/boot/
+      sudo cp grub.cfg /mnt/android-x86/boot
+
+      sudo umount /mnt/android-x86
+      sudo losetup -d /dev/loop0
+
+      qemu-img convert -f raw -O vpc android-x86.img android-x86.vhd
+      tar -zcvf android-x86.tar.gz android-x86.vhd
+
+      mkdir -p $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+      cp android-x86.tar.gz $BUILD_ARTIFACTSTAGINGDIRECTORY/android-x86/
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/android-x86'
+      artifactName: android-x86
+    displayName: Publish android-x86

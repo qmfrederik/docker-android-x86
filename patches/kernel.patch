@@ -1,0 +1,13 @@
+diff --git a/arch/x86/configs/android-x86_64_defconfig b/arch/x86/configs/android-x86_64_defconfig
+index 893474a..cd2352c 100644
+--- a/arch/x86/configs/android-x86_64_defconfig
++++ b/arch/x86/configs/android-x86_64_defconfig
+@@ -2327,7 +2327,7 @@ CONFIG_USB_IPHETH=m
+ CONFIG_USB_SIERRA_NET=m
+ CONFIG_USB_VL600=m
+ CONFIG_USB_NET_CH9200=m
+-CONFIG_WLAN=y
++# CONFIG_WLAN is not set
+ CONFIG_WLAN_VENDOR_ADMTEK=y
+ CONFIG_ADM8211=m
+ CONFIG_ATH_COMMON=m

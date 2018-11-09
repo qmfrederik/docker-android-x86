@@ -22,7 +22,7 @@ system.img:
 ramdisk.img: system.img
 initrd.img: system.img
 
-system.tar:
+system.tar: system.img
 	[ -d system ] || mkdir system
 	sudo mount -o ro system.img system
 	sudo tar --exclude="system/lost+found" -cpf system.tar system
@@ -30,12 +30,12 @@ system.tar:
 
 initrd.tar: initrd.img
 	[ -d initrd ] || mkdir initrd
-	zcat initrd.img | cpio -idv -D initrd
+	(cd initrd && zcat ../initrd.img | cpio -idv)
 	sudo tar -cpf initrd.tar -C initrd .
 
 ramdisk.tar: ramdisk.img
 	[ -d ramdisk ] || mkdir ramdisk
-	zcat ramdisk.img | cpio -idv -D ramdisk
+	(cd ramdisk && zcat ../ramdisk.img | cpio -idv)
 	sudo tar -cpf ramdisk.tar -C ramdisk .
 
 clean:
