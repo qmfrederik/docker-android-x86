@@ -1,5 +1,5 @@
 diff --git a/arch/x86/configs/android-x86_64_defconfig b/arch/x86/configs/android-x86_64_defconfig
-index 893474a..cd2352c 100644
+index 893474a..01dade7 100644
 --- a/arch/x86/configs/android-x86_64_defconfig
 +++ b/arch/x86/configs/android-x86_64_defconfig
 @@ -2327,7 +2327,7 @@ CONFIG_USB_IPHETH=m
@@ -11,3 +11,12 @@ index 893474a..cd2352c 100644
  CONFIG_WLAN_VENDOR_ADMTEK=y
  CONFIG_ADM8211=m
  CONFIG_ATH_COMMON=m
+@@ -5690,7 +5690,7 @@ CONFIG_RTL8192E=m
+ CONFIG_R8712U=m
+ CONFIG_R8188EU=m
+ CONFIG_88EU_AP_MODE=y
+-CONFIG_RTL8723BS=m
++# CONFIG_RTL8723BS is not set
+ CONFIG_WLAN_SDIO=y
+ CONFIG_RTL8723BU=m
+ CONFIG_RTL8821AU=m
