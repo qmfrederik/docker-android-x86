@@ -13,7 +13,7 @@ lofile=`sudo losetup -f`
 
 losetup -fP $image_name.img
 
-mkfs -t ext3 ${lofile}p1
+mkfs -t ext4 ${lofile}p1
 mkdir /mnt/$image_name
 mount ${lofile}p1 /mnt/$image_name
 
