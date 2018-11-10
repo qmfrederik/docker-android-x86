@@ -74,11 +74,27 @@ jobs:
     displayName: Publish kernel
 
 - job: build_vhd
+  dependsOn:
+  - extract_iso
+  - kernel
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: android-x86
+
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: kernel
+
   - script: |
       sudo apt-get install -y qemu-utils
+
+      cp $SYSTEM_ARTIFACTSDIRECTORY/kernel/kernel .
+      cp $SYSTEM_ARTIFACTSDIRECTORY/android-x86/initrd.img .
+      cp $SYSTEM_ARTIFACTSDIRECTORY/android-x86/ramdisk.img .
+      cp $SYSTEM_ARTIFACTSDIRECTORY/android-x86/system.tar .
 
       sudo ./make-vhd.sh
 
