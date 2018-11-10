@@ -45,6 +45,37 @@ References:
 - http://my-zhang.github.io/blog/2014/06/28/make-bootable-linux-disk-image-with-grub2/
 - https://superuser.com/questions/130955/how-to-install-grub-into-an-img-file 
 
+## Rebuilding the ramdisk
+
+[Unpacking, modifying and repacking](http://linuxkernel51.blogspot.com/2016/11/unpack-modify-and-repack-ramdiskimg.html) the ramdisk is as simple as:
+
+```
+mkdir ramdisk
+cd ramdisk
+gzip -dc ../ramdisk.img | cpio -i
+```
+
+and 
+
+```
+cd ..
+mkbootfs ./ramdisk | gzip > ramdisk_new.gz
+mv ramdisk_new.gz ramdisk_new.img
+```
+
+once you have `mkbootfs`.
+
+[You'll need to build mkbootfs from the Android source](https://pete.akeo.ie/2013/10/compiling-and-running-your-own-android.html), [and you need libcutils](https://github.com/pbatard/bootimg-tools/issues/7#issuecomment-312472851).
+
+In short:
+
+```
+cd system/core/cpio
+gcc mkbootfs.c -o mkbootfs -I../include -lcutils -L/usr/lib/android/
+export LD_LIBRARY_PATH=/usr/lib/android
+./mkbootfs
+```
+
 ## Docker
 
 A binary distribution of Docker, which runs on glibc and musl-based Linux, is available at https://download.docker.com/linux/static/stable/x86_64/. The binaries run on Android as well.
