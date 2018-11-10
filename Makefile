@@ -15,10 +15,12 @@ system.img:
 	cp iso/system.sfs system.sfs
 	cp iso/initrd.img initrd.img
 	cp iso/ramdisk.img ramdisk.img
+	cp iso/kernel kernel
 	sudo umount iso
 
 	unsquashfs -f -d . system.sfs system.img
 
+kernel: system.img
 ramdisk.img: system.img
 initrd.img: system.img
 
