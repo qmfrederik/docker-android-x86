@@ -63,7 +63,15 @@ jobs:
       cd android-x86
 
       make kernel TARGET_PRODUCT=android_x86_64
+      mkdir -p $BUILD_ARTIFACTSTAGINGDIRECTORY/kernel/
+      cp out/target/product/x86_64/kernel $BUILD_ARTIFACTSTAGINGDIRECTORY/kernel/
     displayName: Build the Android kernel
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/kernel/'
+      artifactName: kernel
+    displayName: Publish kernel
 
 - job: build_vhd
   pool:
