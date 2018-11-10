@@ -17,19 +17,20 @@ mkfs -t ext3 ${lofile}p1
 mkdir /mnt/$image_name
 mount ${lofile}p1 /mnt/$image_name
 
-mkdir -p /mnt/$image_name/boot/grub
+mkdir -p /mnt/$image_name/boot/
+mkdir -p /mnt/$image_name/grub/
 
 echo "(hd0) $lofile" > $image_name.map
 grub-install --no-floppy --grub-mkdevicemap=$image_name.map --modules="part_msdos" --boot-directory=/mnt/android-x86 $lofile
 
-cp grub.cfg /mnt/$image_name/boot/grub
+cp grub.cfg /mnt/$image_name/grub
 cp kernel /mnt/$image_name/
 cp initrd.img /mnt/$image_name/
 cp ramdisk.img /mnt/$image_name/
 
 mkdir -p /mnt/$image_name/data
 mkdir -p /mnt/$image_name/system
-tar xf system.tar -C /mnt/$image_name/system
+tar xf system.tar -C /mnt/$image_name/
 
 ls /mnt/$image_name/system
 
