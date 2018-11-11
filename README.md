@@ -34,6 +34,18 @@ To figure out which features need to be enabled:
 - For Azure: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-upload-generic#linux-kernel-requirements
 - For Kata containers: https://github.com/kata-containers/documentation/blob/master/Developer-Guide.md#install-guest-kernel-images
 
+To get the configuration of a kernel image, run
+
+```
+${kernel_repo}/sripts/extract-ikconfig
+```
+
+To get the configuration of the running kernel image, run
+
+```
+zcat /proc/config.gz
+```
+ 
 ## Creating an Android VHD image
 
 You can create a custom `.vhd` image which you can use to boot Android-x86 in VirtualBox, Hyper-V or Azure, using the Android-x86 installer `.iso` file, and the custom kernel.
