@@ -38,6 +38,12 @@ make -C kernel ARCH=x86_64 menuconfig
 
 You'll need to edit the `arch/x86/configs/android-x86_64_defconfig` configuration file.
 
+To build the kernel, run
+
+```
+make kernel TARGET_PRODUCT=android_x86_64
+```
+
 To figure out which features need to be enabled:
 - For Docker: https://wiki.gentoo.org/wiki/Docker#Kernel
 - For Azure: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-upload-generic#linux-kernel-requirements
