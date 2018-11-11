@@ -1,5 +1,5 @@
 diff --git a/arch/x86/configs/android-x86_64_defconfig b/arch/x86/configs/android-x86_64_defconfig
-index 893474a..5a1efc7 100644
+index 893474a..dea1185 100644
 --- a/arch/x86/configs/android-x86_64_defconfig
 +++ b/arch/x86/configs/android-x86_64_defconfig
 @@ -725,7 +725,7 @@ CONFIG_PCI_IOV=y
@@ -67,3 +67,12 @@ index 893474a..5a1efc7 100644
  CONFIG_STAGING=y
  CONFIG_SLICOSS=m
  CONFIG_PRISM2_USB=m
+@@ -5690,7 +5690,7 @@ CONFIG_RTL8192E=m
+ CONFIG_R8712U=m
+ CONFIG_R8188EU=m
+ CONFIG_88EU_AP_MODE=y
+-CONFIG_RTL8723BS=m
++# CONFIG_RTL8723BS is not set
+ CONFIG_WLAN_SDIO=y
+ CONFIG_RTL8723BU=m
+ CONFIG_RTL8821AU=m
