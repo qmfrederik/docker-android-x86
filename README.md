@@ -29,6 +29,15 @@ You can limit the amount of sources you need to pull to build a custom Android-x
 
 See the `make-kernel.sh` script for the details.
 
+To configure the kernel, run:
+
+```
+lunch android_x86-userdebug
+make -C kernel ARCH=x86_64 menuconfig
+```
+
+You'll need to edit the `arch/x86/configs/android-x86_64_defconfig` configuration file.
+
 To figure out which features need to be enabled:
 - For Docker: https://wiki.gentoo.org/wiki/Docker#Kernel
 - For Azure: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-upload-generic#linux-kernel-requirements
